@@ -1,6 +1,7 @@
 #include <iostream>
-#include <cmath>
 #include <iomanip>
+#include <cmath>
+#include <string>
 using namespace std;
 const double pi = 3.14;
 class HinhHoc {
@@ -35,13 +36,14 @@ public:
     
     virtual double TinhDienTich() const = 0;
     virtual double TinhChuVi()    const = 0;
+    virtual string getTenHinh()   const = 0;
     
     double TinhThue() const {
-        double heSo = 0;
-        if (khuVuc == 1) heSo = 2.0;
-        else if (khuVuc == 2) heSo = 1.5;
-        else if (khuVuc == 3) heSo = 1.0;
-        return TinhDienTich() * heSo * giaDat * (thueSuat / 100.0);
+        double hesoKV;
+        if (khuVuc == 1) hesoKV = 2.0;
+        else if (khuVuc == 2) hesoKV = 1.5;
+        else if (khuVuc == 3) hesoKV = 1.0;
+        return TinhDienTich() * hesoKV * giaDat * (thueSuat / 100.0);
     }
     double ThuePhaiNop() const {
         return TinhThue() - (mienGiam / 100.0 * TinhThue());
@@ -68,13 +70,22 @@ public:
     ~HinhTron() {}    // destructor
     
     double TinhDienTich() const override { return pi * pow(banKinh, 2); }
-    double TinhChuVi()    const override { return 2.0 * pi * banKinh;     }
+    double TinhChuVi()    const override { return 2.0 * pi * banKinh;   }
+    string getTenHinh()   const override { return "Hinh Tron";          }
     
     // operator
     friend istream& operator>>(istream& in, HinhTron& h) {
         int kv; double gia, ts, mg;
-        cout << "Nhap ban kinh: "; in >> h.banKinh;
-        cout << "Nhap khu vuc (1/2/3): "; in >> kv;
+        do {
+        	cout << "Nhap ban kinh: "; in >> h.banKinh;
+        	if (h.banKinh <= 0) cout << "Ban kinh khong hop le! Nhap lai.\n";
+        	else break;
+		} while (true);
+        do {
+        	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
+        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	else break;
+		} while (true);
         cout << "Nhap gia dat (VND/m^2): "; in >> gia;
         cout << "Nhap thue suat (%): "; in >> ts;
         cout << "Nhap mien giam (%): "; in >> mg;
@@ -113,12 +124,21 @@ public:
     
     double TinhDienTich() const override { return dai * rong;         }
     double TinhChuVi()    const override { return (dai + rong) * 2.0; }
+    string getTenHinh()   const override { return "Hinh Chu Nhat";    }
     
     // operator
     friend istream& operator>>(istream& in, HinhChuNhat& h) {
         int kv; double gia, ts, mg;
-        cout << "Nhap dai, rong: "; in >> h.dai >> h.rong;
-        cout << "Nhap khu vuc (1/2/3): "; in >> kv;
+        do {
+        	cout << "Nhap dai, rong: "; in >> h.dai >> h.rong;
+        	if (h.dai <= 0 || h.rong <= 0) cout << "Hinh chu nhat khong hop le! Nhap lai.\n";
+        	else break;
+		} while (true);
+        do {
+        	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
+        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	else break;
+		} while (true);
         cout << "Nhap gia dat (VND/m^2): "; in >> gia;
         cout << "Nhap thue suat (%): "; in >> ts;
         cout << "Nhap mien giam (%): "; in >> mg;
@@ -161,13 +181,26 @@ public:
         double p = (a + b + c) / 2.0;
         return sqrt(p * (p - a) * (p - b) * (p - c));
     }
-    double TinhChuVi() const override { return a + b + c; }
+    double TinhChuVi()  const override { return a + b + c; }
+    string getTenHinh() const override { return "Tam Giac"; }
     
     // operator
     friend istream& operator>>(istream& in, TamGiac& h) {
         int kv; double gia, ts, mg;
-        cout << "Nhap canh a, b, c: "; in >> h.a >> h.b >> h.c;
-        cout << "Nhap khu vuc (1/2/3): "; in >> kv;
+        do {
+            cout << "Nhap canh a, b, c: "; in >> h.a >> h.b >> h.c;
+            if (h.a <= 0 || h.b <= 0 || h.c <= 0 ||
+                h.a + h.b <= h.c ||
+                h.a + h.c <= h.b ||
+                h.b + h.c <= h.a) {
+                cout << "Tam giac khong hop le! Nhap lai.\n";
+            } else break;
+        } while (true);
+        do {
+        	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
+        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	else break;
+		} while (true);
         cout << "Nhap gia dat: "; in >> gia;
         cout << "Nhap thue suat: "; in >> ts;
         cout << "Nhap mien giam: "; in >> mg;
@@ -185,23 +218,63 @@ public:
     void nhap() override       { cin  >> *this; }
     void xuat() const override { cout << *this; }
 };
+void xuatDanhSach(HinhHoc* ds[], int n) {
+    if (n == 0) {
+        cout << "Chua co lo dat nao!\n";
+        return;
+    }
+    double tongThue = 0;
+    cout << "\n					DANH SACH CHI TIET CAC LO DAT\n";
+    cout << string(100, '-') << "\n";
+    cout << left
+         << setw(10)  << "Lo Dat"
+         << setw(16) << "Ten Hinh"
+         << setw(14) << "Dien Tich"
+         << setw(12) << "Chu Vi"
+         << setw(20) << "So Tien Thue"
+         << setw(17) << "Thue Phai Nop"
+         << "\n";
+    cout << string(100, '-') << "\n";
+    for (int i = 0; i < n; i++) {
+        cout << fixed << setprecision(2);
+        cout << left
+             << "#" << setw(10) << (i + 1)
+             << setw(16) << ds[i]->getTenHinh()
+             << setw(14) << ds[i]->TinhDienTich()
+             << setw(12) << ds[i]->TinhChuVi()
+             << setw(20) << ds[i]->TinhThue()
+             << setw(17) << ds[i]->ThuePhaiNop()
+             << " VND\n";
+        tongThue += ds[i]->ThuePhaiNop();
+    }
+    cout << string(100, '-') << "\n";
+    cout << "TONG THUE PHAI NOP: " << fixed << setprecision(2) << tongThue << " VND\n";
+}
+
 int main() {
     HinhHoc* ds[100];
     int n = 0, choice;
     do {
-        cout << "\n==================================================\n"
-			 << "	HE THONG TINH THUE DAT HINH HOC\n"
-			 << "==================================================\n"
+        cout << "\n" << string(100, '=') << "\n"
+			 << "				HE THONG TINH THUE DAT HINH HOC\n"
+			 << string(100, '=') << "\n"
              << "1. Them Hinh Tron\n"
              << "2. Them Hinh Chu Nhat\n"
              << "3. Them Tam Giac\n"
-             //<< "4. Hinh Vuong\n"
+             << "4. Xem danh sach lo dat\n"
              << "0. Thoat\n"
-             << "--------------------------------------------------\n"
+             << string(100, '-') << "\n"
              << "Nhap lua chon: ";
         cin >> choice;
-        if (choice == 0) break;
-        if (n >= 100) { cout << "Danh sach day!\n"; break; }
+        if (choice == 0) { cout << "\nCam on ban da su dung chuong trinh!"; break;	}
+        if (choice == 4) {
+            xuatDanhSach(ds, n);
+         	cout << "Press any key to continue . . .";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (n >= 100) { cout << "Danh sach day!\n"; continue; }
         switch (choice) {
             case 1: ds[n] = new HinhTron();    break;
             case 2: ds[n] = new HinhChuNhat(); break;
@@ -212,13 +285,11 @@ int main() {
         }
         ds[n]->nhap();
         n++;
+        cout << "=> Them thanh cong lo dat!\n"
+        	 << "Press any key to continue . . .";
+        cin.ignore();
+        cin.get();
     } while (true);
-    
-    cout << "\n======= DANH SACH =======\n";
-    for (int i = 0; i < n; i++) {
-        ds[i]->xuat();
-        cout << endl;
-    }
     
     for (int i = 0; i < n; i++) delete ds[i]; // giai phong bo nho
     return 0;
