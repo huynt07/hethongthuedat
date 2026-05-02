@@ -4,6 +4,12 @@
 #include <string>
 using namespace std;
 const double pi = 3.14;
+#define RESET      "\033[0m"
+#define LIGHT_RED  "\033[0;31m"
+#define RED        "\033[1;31m"
+#define GREEN      "\033[1;32m"
+#define YELLOW     "\033[1;33m"
+#define CYAN       "\033[1;36m"
 class HinhHoc {
 private:
     int khuVuc;
@@ -78,12 +84,12 @@ public:
         int kv; double gia, ts, mg;
         do {
         	cout << "Nhap ban kinh: "; in >> h.banKinh;
-        	if (h.banKinh <= 0) cout << "Ban kinh khong hop le! Nhap lai.\n";
+        	if (h.banKinh <= 0) cout << RED << "Ban kinh khong hop le! Nhap lai.\n" << RESET;
         	else break;
 		} while (true);
         do {
         	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
-        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	if (kv < 1 || kv > 3) cout << RED << "Khu vuc khong hop le! Nhap lai.\n" << RESET;
         	else break;
 		} while (true);
         cout << "Nhap gia dat (VND/m^2): "; in >> gia;
@@ -96,8 +102,8 @@ public:
         out << "Hinh Tron" << endl;
         out << "Dien tich: " << h.TinhDienTich() << endl;
         out << "Chu vi: " << h.TinhChuVi() << endl;
-        out << "Thue phat sinh: " << h.TinhThue() << endl;
-        out << "Thue phai nop: " << h.ThuePhaiNop() << endl;
+        out << LIGHT_RED << "Thue phat sinh: " << h.TinhThue() << RESET << endl;
+        out << RED << "Thue phai nop: " << h.ThuePhaiNop() << RESET << endl;
         return out;
     }
     void nhap() override       { cin  >> *this; }
@@ -131,12 +137,12 @@ public:
         int kv; double gia, ts, mg;
         do {
         	cout << "Nhap dai, rong: "; in >> h.dai >> h.rong;
-        	if (h.dai <= 0 || h.rong <= 0) cout << "Hinh chu nhat khong hop le! Nhap lai.\n";
+        	if (h.dai <= 0 || h.rong <= 0) cout << RED << "Hinh chu nhat khong hop le! Nhap lai.\n" << RESET;
         	else break;
 		} while (true);
         do {
         	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
-        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	if (kv < 1 || kv > 3) cout << RED << "Khu vuc khong hop le! Nhap lai.\n" << RESET;
         	else break;
 		} while (true);
         cout << "Nhap gia dat (VND/m^2): "; in >> gia;
@@ -149,8 +155,8 @@ public:
         out << "Hinh Chu Nhat" << endl;
         out << "Dien tich: " << h.TinhDienTich() << endl;
         out << "Chu vi: " << h.TinhChuVi() << endl;
-        out << "Thue phat sinh: " << h.TinhThue() << endl;
-        out << "Thue phai nop: " << h.ThuePhaiNop() << endl;
+        out << LIGHT_RED << "Thue phat sinh: " << h.TinhThue() << RESET << endl;
+        out << RED << "Thue phai nop: " << h.ThuePhaiNop() << RESET << endl;
         return out;
     }
     void nhap() override       { cin  >> *this; }
@@ -193,12 +199,12 @@ public:
                 h.a + h.b <= h.c ||
                 h.a + h.c <= h.b ||
                 h.b + h.c <= h.a) {
-                cout << "Tam giac khong hop le! Nhap lai.\n";
+                cout << RED << "Tam giac khong hop le! Nhap lai.\n" << RESET;
             } else break;
         } while (true);
         do {
         	cout << "Nhap khu vuc (1. Trung Tam/2. Ven Do/3. Ngoai O): "; in >> kv;
-        	if (kv < 1 || kv > 3) cout << "Khu vuc khong hop le! Nhap lai.\n";
+        	if (kv < 1 || kv > 3) cout << RED << "Khu vuc khong hop le! Nhap lai.\n" << RESET;
         	else break;
 		} while (true);
         cout << "Nhap gia dat: "; in >> gia;
@@ -211,8 +217,8 @@ public:
         out << "Tam Giac" << endl;
         out << "Dien tich: " << h.TinhDienTich() << endl;
         out << "Chu vi: " << h.TinhChuVi() << endl;
-        out << "Thue phat sinh: " << h.TinhThue() << endl;
-        out << "Thue phai nop: " << h.ThuePhaiNop() << endl;
+        out << LIGHT_RED << "Thue phat sinh: " << h.TinhThue() << RESET << endl;
+        out << RED << "Thue phai nop: " << h.ThuePhaiNop() << RESET << endl;
         return out;
     }
     void nhap() override       { cin  >> *this; }
@@ -220,56 +226,55 @@ public:
 };
 void xuatDanhSach(HinhHoc* ds[], int n) {
     if (n == 0) {
-        cout << "Chua co lo dat nao!\n";
+        cout << YELLOW << "Chua co lo dat nao!\n" << RESET;
         return;
     }
     double tongThue = 0;
-    cout << "\n					DANH SACH CHI TIET CAC LO DAT\n";
-    cout << string(100, '-') << "\n";
-    cout << left
-         << setw(10)  << "Lo Dat"
+    cout << YELLOW << "\n				   DANH SACH CHI TIET CAC LO DAT\n" << RESET;
+    cout << YELLOW << string(100, '-') << "\n" << RESET;
+    cout << YELLOW << left
+         << setw(10) << "Lo Dat"
          << setw(16) << "Ten Hinh"
          << setw(14) << "Dien Tich"
          << setw(12) << "Chu Vi"
          << setw(20) << "So Tien Thue"
          << setw(17) << "Thue Phai Nop"
-         << "\n";
-    cout << string(100, '-') << "\n";
+         << "\n" << RESET;
+    cout << YELLOW << string(100, '-') << "\n" << RESET;
     for (int i = 0; i < n; i++) {
-        cout << fixed << setprecision(2);
         cout << left
-             << "#" << setw(10) << (i + 1)
+             << "#" << setw(9) << (i + 1)
              << setw(16) << ds[i]->getTenHinh()
-             << setw(14) << ds[i]->TinhDienTich()
-             << setw(12) << ds[i]->TinhChuVi()
-             << setw(20) << ds[i]->TinhThue()
-             << setw(17) << ds[i]->ThuePhaiNop()
+             << fixed << setprecision(2) << setw(14) << ds[i]->TinhDienTich()
+             << fixed << setprecision(2) << setw(12) << ds[i]->TinhChuVi()
+             << fixed << setprecision(3) << LIGHT_RED << setw(20) << ds[i]->TinhThue()
+             << fixed << setprecision(3) << RED << setw(17) << ds[i]->ThuePhaiNop() << RESET
              << " VND\n";
         tongThue += ds[i]->ThuePhaiNop();
     }
-    cout << string(100, '-') << "\n";
-    cout << "TONG THUE PHAI NOP: " << fixed << setprecision(2) << tongThue << " VND\n";
+    cout << YELLOW << string(100, '-') << "\n" << RESET;
+    cout << YELLOW << "TONG THUE PHAI NOP: " << RESET << fixed << setprecision(3) << tongThue << " VND\n";
 }
 
 int main() {
     HinhHoc* ds[100];
     int n = 0, choice;
     do {
-        cout << "\n" << string(100, '=') << "\n"
-			 << "				HE THONG TINH THUE DAT HINH HOC\n"
-			 << string(100, '=') << "\n"
+        cout << CYAN << "\n" << string(100, '=') << "\n" << RESET
+			 << CYAN << "				 HE THONG TINH THUE DAT HINH HOC\n" << RESET
+			 << CYAN << string(100, '=') << "\n" << RESET
              << "1. Them Hinh Tron\n"
              << "2. Them Hinh Chu Nhat\n"
              << "3. Them Tam Giac\n"
              << "4. Xem danh sach lo dat\n"
              << "0. Thoat\n"
-             << string(100, '-') << "\n"
+             << CYAN << string(100, '-') << "\n" << RESET
              << "Nhap lua chon: ";
         cin >> choice;
-        if (choice == 0) { cout << "\nCam on ban da su dung chuong trinh!"; break;	}
+        if (choice == 0) { cout << YELLOW << "\nCam on ban da su dung chuong trinh!\n" << RESET; break;	}
         if (choice == 4) {
             xuatDanhSach(ds, n);
-         	cout << "Press any key to continue . . .";
+         	cout << "Nhan Enter de tiep tuc . . .";
             cin.ignore();
             cin.get();
             continue;
@@ -280,13 +285,16 @@ int main() {
             case 2: ds[n] = new HinhChuNhat(); break;
             case 3: ds[n] = new TamGiac();     break;
             default:
-                cout << "Lua chon khong hop le!\n";
+                cout << RED << "Lua chon khong hop le!\n" << RESET
+                	 << "Nhan Enter de tiep tuc . . .";
+	            cin.ignore();
+	            cin.get();
                 continue;
         }
         ds[n]->nhap();
         n++;
-        cout << "=> Them thanh cong lo dat!\n"
-        	 << "Press any key to continue . . .";
+        cout << GREEN << "Them thanh cong lo dat!\n" << RESET
+        	 << "Nhan Enter de tiep tuc . . .";
         cin.ignore();
         cin.get();
     } while (true);
