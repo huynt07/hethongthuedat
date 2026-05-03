@@ -247,13 +247,12 @@ void xuatDanhSach(HinhHoc* ds[], int n) {
              << setw(16) << ds[i]->getTenHinh()
              << fixed << setprecision(2) << setw(14) << ds[i]->TinhDienTich()
              << fixed << setprecision(2) << setw(12) << ds[i]->TinhChuVi()
-             << fixed << setprecision(3) << LIGHT_RED << setw(20) << ds[i]->TinhThue()
-             << fixed << setprecision(3) << RED << setw(17) << ds[i]->ThuePhaiNop() << RESET
-             << " VND\n";
+             << fixed << setprecision(0) << LIGHT_RED << setw(20) << ds[i]->TinhThue()
+             << fixed << setprecision(0) << RED << setw(17) << ds[i]->ThuePhaiNop() << RESET << "\n";
         tongThue += ds[i]->ThuePhaiNop();
     }
     cout << YELLOW << string(100, '-') << "\n" << RESET;
-    cout << YELLOW << "TONG THUE PHAI NOP: " << RESET << fixed << setprecision(3) << tongThue << " VND\n";
+    cout << YELLOW << "TONG THUE PHAI NOP: " << RESET << tongThue << " VND\n";
 }
 
 int main() {
